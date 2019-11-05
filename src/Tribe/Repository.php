@@ -1611,6 +1611,43 @@ abstract class Tribe__Repository
 	}
 
 	/**
+	 * Filters the query to only return posts that are related, via a meta key, to posts
+	 * that have a specific meta value.
+	 *
+	 * @param string|array $meta_keys One or more `meta_keys` relating the queried post type(s)
+	 *                                to another post type.
+	 * @param string       $compare   The SQL comparison operator.
+	 * @param string       $field     One (a column in the `postmeta` table) that should match
+	 *                                the comparison criteria; required if the comparison operator is not `EXISTS` or
+	 *                                `NOT EXISTS`.
+	 * @param string|array $values    One or more values the post field(s) should be compared to;
+	 *                                required if the comparison operator is not `EXISTS` or `NOT EXISTS`.
+	 *
+	 * @return $this
+	 * @throws Tribe__Repository__Usage_Error If the comparison operator requires fields and values
+	 */
+	public function where_meta_related_by_meta( $meta_keys, $compare, $field = null, $values = null ) {
+		bdump('where_meta_related_by_meta');
+		$meta_keys = Tribe__Utils__Array::list_to_array( $meta_keys );
+
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$pm   = $this->sql_slug( 'meta_related_meta_post', $compare, $meta_keys );
+
+		$this->filter_query->join( "LEFT JOIN {$wpdb->postmeta} {$pm} ON {$wpdb->posts}.ID = {$pm}.post_id" );
+
+		if ( in_array( $compare, self::$multi_value_keys, true ) ) {
+			$values = $this->prepare_interval( $values );
+		} else {
+			$values = $this->prepare_value( $values );
+		}
+
+		$this->filter_query->where( "{$pm}.meta_key = '{$field}' AND {$pm}.meta_value IN ( {$values} )" );
+
+		return $this;
+	}
+
+	/**
 	 * Builds a fenced group of WHERE clauses that will be used with OR logic.
 	 *
 	 * Mind that this is a lower level implementation of WHERE logic that requires

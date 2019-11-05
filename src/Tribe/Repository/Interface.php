@@ -123,7 +123,7 @@ interface Tribe__Repository__Interface
 	public function where_or( $callbacks );
 
 	/**
-	 * Filters the query to return posts that have got a number or posts
+	 * Filters the query to return posts that have got a number of posts
 	 * related to them by meta at least equal to a value.
 	 *
 	 * @since 4.7.19
@@ -143,7 +143,7 @@ interface Tribe__Repository__Interface
 	public function by_related_to_min( $by_meta_keys, $min, $keys = null, $values = null );
 
 	/**
-	 * Filters the query to return posts that have got a number or posts
+	 * Filters the query to return posts that have got a number of posts
 	 * related to them by meta at most equal to a value.
 	 *
 	 * @since 4.7.19
@@ -164,7 +164,7 @@ interface Tribe__Repository__Interface
 	public function by_related_to_max( $by_meta_keys, $max, $keys = null, $values = null );
 
 	/**
-	 * Filters the query to return posts that have got a number or posts
+	 * Filters the query to return posts that have got a number of posts
 	 * related to them by meta between two values.
 	 *
 	 * @since 4.7.19
