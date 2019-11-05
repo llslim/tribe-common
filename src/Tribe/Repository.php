@@ -1627,7 +1627,7 @@ abstract class Tribe__Repository
 	 * @throws Tribe__Repository__Usage_Error If the comparison operator requires fields and values
 	 */
 	public function where_meta_related_by_meta( $meta_keys, $compare, $field = null, $values = null ) {
-		bdump('where_meta_related_by_meta');
+
 		$meta_keys = Tribe__Utils__Array::list_to_array( $meta_keys );
 
 		/** @var wpdb $wpdb */
